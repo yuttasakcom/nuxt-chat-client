@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -43,17 +44,17 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      if (this.username === "" || this.email === "" || this.password === "")
-        return;
+    ...mapActions("user", ["signup"]),
+    async onSubmit() {
+      // if (this.username === "" || this.email === "" || this.password === "")
+      if (this.username === "") return;
 
-      const signupInput = {
-        username: this.username,
-        email: this.email,
-        password: this.password
+      const data = {
+        username: this.username
       };
 
-      console.log(signupInput);
+      const user = await this.signup(data);
+      console.log(user);
     }
   }
 };
