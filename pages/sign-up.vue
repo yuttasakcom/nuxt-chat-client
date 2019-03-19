@@ -3,9 +3,9 @@
     <h1>Sign-Up</h1>
     <form @submit.prevent="onSubmit">
       <div class="form-group row">
-        <label for="username" class="col-sm-2 col-form-label">Username</label>
+        <label for="Name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" placeholder="Username" v-model="username">
+          <input type="text" class="form-control" placeholder="Name" v-model="name">
         </div>
       </div>
 
@@ -19,7 +19,7 @@
       <div class="form-group row">
         <label for="password" class="col-sm-2 col-form-label">Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" placeholder="******" v-model="password">
+          <input type="password" class="form-control" placeholder="********" v-model="password">
         </div>
       </div>
 
@@ -38,7 +38,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      username: "",
+      name: "",
       email: "",
       password: ""
     };
@@ -46,15 +46,18 @@ export default {
   methods: {
     ...mapActions("user", ["signup"]),
     async onSubmit() {
-      // if (this.username === "" || this.email === "" || this.password === "")
-      if (this.username === "") return;
+      if (this.name === "" || this.email === "" || this.password === "") {
+        return;
+      }
 
       const data = {
-        username: this.username
+        name: this.name,
+        email: this.email,
+        password: this.password
       };
 
-      const user = await this.signup(data);
-      console.log(user);
+      await this.signup(data);
+      this.$router.push("/");
     }
   }
 };

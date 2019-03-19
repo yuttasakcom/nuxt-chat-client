@@ -2,9 +2,14 @@ import gql from "graphql-tag";
 
 export default gql`
   mutation($data: SignUpInput!) {
-    createUser(data: $data) {
+    signup(data: $data) {
       id
-      username
+      name
+      email
+      status
+      role
+      createdAt
+      updatedAt
     }
   }
 `;
