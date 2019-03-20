@@ -5,7 +5,7 @@
       <div class="col-lg-4 col-sm-12">
         <div class="card" style="width: 18rem;">
           <div class="card-header">Chat Room</div>
-          <ul class="list-group list-group-flush">
+          <ul v-if="chatRooms && chatRooms.length > 0" class="list-group list-group-flush">
             <li
               v-for="chatRoom in chatRooms"
               :key="chatRoom.id"
@@ -23,8 +23,8 @@
         <div class="card border-dark mb-3" style="max-width: 100%;">
           <div class="card-header">Chat Message</div>
           <div class="card-body text-dark">
-            <div class="card" v-for="chatMessage in chatMessages" :key="chatMessage.id">
-              <div class="card-body">
+            <div v-if="chatMessages && chatMessages.length > 0" class="card">
+              <div class="card-body" v-for="chatMessage in chatMessages" :key="chatMessage.id">
                 <h5 class="card-title">{{ chatMessage.sender.name }}</h5>
                 <p class="card-text">{{ chatMessage.text }}</p>
                 <p class="card-text">
@@ -47,10 +47,11 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   async mounted() {
-    this.currentChatRoom = this.chatRooms[0].id;
-    const chatMessages = await this.getChatMessage(this.currentChatRoom);
-    this.chatMessages = chatMessages.data.chats;
-    console.log(this.chatMessages);
+    if (this.chatRooms.length > 0) {
+      this.currentChatRoom = this.chatRooms[0].id;
+      const chatMessages = await this.getChatMessage(this.currentChatRoom);
+      this.chatMessages = chatMessages.data.chats;
+    }
   },
   data: () => ({
     currentChatRoom: "",
