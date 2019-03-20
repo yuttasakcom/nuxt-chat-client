@@ -44,6 +44,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import chatCreated from "../graphql/chat/chatCreated";
 
 export default {
   async mounted() {
@@ -62,6 +63,29 @@ export default {
   },
   methods: {
     ...mapActions("chat", ["getChatMessage"])
+  },
+  apollo: {
+    // Subscriptions
+    $subscribe: {
+      // When a tag is added
+      chatCreated: {
+        query: chatCreated,
+        // Reactive variables
+        variables() {
+          // This works just like regular queries
+          // and will re-subscribe with the right variables
+          // each time the values change
+          return {
+            chatRoom: this.currentChatRoom
+          };
+        },
+        // Result hook
+        result({data}) {
+          console.log(data);
+          this.chatMessages.push(data.chatCreated)
+        }
+      }
+    }
   }
 };
 </script>
